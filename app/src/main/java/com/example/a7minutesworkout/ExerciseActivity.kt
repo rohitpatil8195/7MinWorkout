@@ -10,6 +10,7 @@ import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.a7minutesworkout.databinding.ActivityExcerciseBinding
 import java.lang.Exception
 import java.util.*
@@ -30,7 +31,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
      private var tts: TextToSpeech ?= null
     private var player:MediaPlayer ?= null
 
-
+    private var exerciseAdapter: ExerciseStatusAdapter ?= null
     @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,9 +51,20 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         }
 
         setupRestView()
+        setupExerciseStatusRecyclerView()
 
 
     }
+
+
+   private fun setupExerciseStatusRecyclerView(){
+      binding?.rvExerciseStatus?.layoutManager =
+          LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
+
+       exerciseAdapter = ExerciseStatusAdapter(excerciseList!!)
+       binding?.rvExerciseStatus?.adapter = exerciseAdapter
+   }
+
 
     private fun setupRestView(){
         try{
