@@ -1,6 +1,7 @@
 package com.example.a7minutesworkout
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -31,6 +32,8 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
      private var tts: TextToSpeech ?= null
     private var player:MediaPlayer ?= null
 
+    private var restTimerDuration:Long =1
+    private var exerciseTimerDuration:Long =1
     private var exerciseAdapter: ExerciseStatusAdapter ?= null
     @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -86,6 +89,8 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             restTimer?.cancel()
             restProgress = 0
         }
+
+        binding?.tvExexciseName?.text = excerciseList!![currentExcercisePosition + 1].getName()
         setRestProgressBar()
     }
 
@@ -103,7 +108,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
           speakOut(excerciseList!![currentExcercisePosition].getName())
             binding?.ivImage?.setImageResource(excerciseList!![currentExcercisePosition].getImage())
           binding?.tvExexciseName?.text =excerciseList!![currentExcercisePosition].getName()
-          binding?.tvTitle?.text=" Get Ready For "+excerciseList!![currentExcercisePosition+1].getName()
+
 
           setExerciseProgressBar()
       }
@@ -111,19 +116,28 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private fun setExerciseProgressBar(){
         binding?.progressBarExcercise?.progress =excerciseProgress
 
-        excerciseTimer =object: CountDownTimer(30000,1000){
+        excerciseTimer =object: CountDownTimer(exerciseTimerDuration*1000,1000){
             override fun onTick(p0: Long) {
                 excerciseProgress++
-                binding?.progressBarExcercise?.progress =30-excerciseProgress
-                binding?.tvTimerExcercise?.text =(30-excerciseProgress).toString()
+                binding?.progressBarExcercise?.progress =exerciseTimerDuration.toInt() - excerciseProgress
+                binding?.tvTimerExcercise?.text = (exerciseTimerDuration.toInt() - excerciseProgress).toString()
                 //speakOut(binding?.tvTimerExcercise?.text.toString())
             }
 
             override fun onFinish() {
-               if(currentExcercisePosition <excerciseList?.size!! -1){
+
+               if(currentExcercisePosition <excerciseList?.size!! - 1){
+                   excerciseList!![currentExcercisePosition].setIsSelected(false)
+                   excerciseList!![currentExcercisePosition].setIsCompleted(true)
+
+                   exerciseAdapter!!.notifyDataSetChanged()
                    setupRestView()
                }else{
-                   Toast.makeText(this@ExerciseActivity,"Congratulations! You have completed 7 Min workout. let's have one more LAP",Toast.LENGTH_SHORT).show()
+                   //Toast.makeText(this@ExerciseActivity,"Congratulations! You have completed 7 Min workout. let's have one more LAP",Toast.LENGTH_SHORT).show()
+                   finish()
+                   val intent =Intent(this@ExerciseActivity,FinishAcitivity::class.java)
+                   startActivity(intent)
+
                }
             }
 
@@ -133,7 +147,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
     private fun setRestProgressBar(){
         binding?.progressBar?.progress =restProgress
-
+        binding?.tvTitle?.text=excerciseList!![currentExcercisePosition+1].getName()
         restTimer =object: CountDownTimer(10000,1000){
             override fun onTick(p0: Long) {
                 restProgress++
@@ -144,6 +158,8 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
             override fun onFinish() {
                 currentExcercisePosition++
+                excerciseList!![currentExcercisePosition].setIsSelected(true)
+                exerciseAdapter!!.notifyDataSetChanged()
                 setupExcersiceView()
             }
 

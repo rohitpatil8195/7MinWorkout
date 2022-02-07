@@ -18,6 +18,7 @@ class MainActivity : AppCompatActivity() {
            var intent =Intent(this,ExerciseActivity::class.java)
            startActivity(intent)
        }
+
     }
 
     override fun onDestroy() {
