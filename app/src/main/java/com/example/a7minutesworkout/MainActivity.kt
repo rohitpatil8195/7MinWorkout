@@ -3,6 +3,7 @@ package com.example.a7minutesworkout
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.a7minutesworkout.databinding.ActivityBmiBinding
 import com.example.a7minutesworkout.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -18,6 +19,11 @@ class MainActivity : AppCompatActivity() {
            var intent =Intent(this,ExerciseActivity::class.java)
            startActivity(intent)
        }
+
+        binding?.flBMI?.setOnClickListener{
+            var intent =Intent(this,BMIActivity::class.java)
+            startActivity(intent)
+        }
 
     }
 

@@ -1,6 +1,7 @@
 package com.example.a7minutesworkout
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
@@ -13,6 +14,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.a7minutesworkout.databinding.ActivityExcerciseBinding
+import com.example.a7minutesworkout.databinding.DilogeCustomBackConfirmationBinding
 import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
@@ -49,8 +51,8 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
         excerciseList =Constants.defaultExcerciseList()
 
-        binding?.toolbarExcercise?.setNavigationOnClickListener {
-            onBackPressed()
+        binding?.toolbarExcercise?.setNavigationOnClickListener() {
+            onBackClick()
         }
 
         setupRestView()
@@ -59,8 +61,24 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
     }
 
+    private fun onBackClick() {
+       // Toast.makeText(this@ExerciseActivity,"Congratulations! You have completed 7 Min workout. let's have one more LAP",Toast.LENGTH_SHORT).show()
+       val customDialog =Dialog(this)
+        val dialogBinding = DilogeCustomBackConfirmationBinding.inflate(layoutInflater)
+        customDialog.setContentView(dialogBinding.root)
+         customDialog.setCanceledOnTouchOutside(false)
+        customDialog.show()
+        dialogBinding.btnYes.setOnClickListener {
+            this@ExerciseActivity.finish()
 
-   private fun setupExerciseStatusRecyclerView(){
+        }
+        dialogBinding.btnNo.setOnClickListener {
+             customDialog.dismiss()
+        }
+    }
+
+
+    private fun setupExerciseStatusRecyclerView(){
       binding?.rvExerciseStatus?.layoutManager =
           LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
 
@@ -207,5 +225,10 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                 Log.d("initF","initialization failed")
            }
        }
+    }
+
+
+    override fun onBackPressed() {
+       onBackClick()
     }
 }
