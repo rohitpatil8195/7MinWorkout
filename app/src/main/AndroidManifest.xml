@@ -14,7 +14,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.7MinutesWorkout">
+        android:theme="@style/Theme.7MinutesWorkout"
+        android:name=".WorkOutApp"
+        >
         <activity
             android:name=".HistoryActivity"
             android:exported="false" />

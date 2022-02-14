@@ -35,7 +35,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private var player:MediaPlayer ?= null
 
     private var restTimerDuration:Long =1
-    private var exerciseTimerDuration:Long =1
+    private var exerciseTimerDuration:Long =30
     private var exerciseAdapter: ExerciseStatusAdapter ?= null
     @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {

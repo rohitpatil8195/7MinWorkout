@@ -43,9 +43,9 @@
             android:text="✓"
             android:textColorHint="@color/colorAccent"
             android:gravity="center"
-            android:textSize="@dimen/default_button_text_size"
+            android:textSize="40sp"
             android:textStyle="bold"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/colorAccent"
             />
     </FrameLayout>
     <TextView
